@@ -7,7 +7,7 @@ const Navbar = () => {
   
   return (
     <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
-      <h1 className="text-lg md:text-xl font-extrabold">Cultural Exchange</h1>
+      <h1 className="text-lg md:text-xl font-extrabold"><Link to="/">Cultural Exchange</Link></h1>
       <div className="flex justify-center items-center space-x-0">
         <p>
           <BsSearch />
