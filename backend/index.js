@@ -6,6 +6,7 @@ const cors = require("cors");
 const multer = require("multer");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
+const postRoute = require("./routes/posts");
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ dotenv.config();
 app.use(express.json());
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
 
 // Database connection
 const connectDB = async () => {
