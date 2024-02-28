@@ -5,12 +5,14 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const multer = require("multer");
 const authRoute = require("./routes/auth");
+const userRoute = require("./routes/users");
 
 dotenv.config();
 
 // Middlewares
 app.use(express.json());
 app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
 
 // Database connection
 const connectDB = async () => {
