@@ -12,7 +12,7 @@ router.post("/create", verifyToken, async (req, res) => {
     const newPost = new Post(req.body);
     const savedPost = await newPost.save();
     res.status(200).json(savedPost);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json(err);
   }
 });
@@ -26,7 +26,7 @@ router.put("/:id", verifyToken,  async (req, res) => {
       { new: true }
     );
     res.status(200).json(updatedPost);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json(err);
   }
 });
@@ -37,7 +37,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
     await Post.findByIdAndDelete(req.params.id);
     await Comment.deleteMany({ postId: req.params.id });
     res.status(200).json("Post has been deleted!");
-  } catch (error) {
+  } catch (err) {
     res.status(500).json(err);
   }
 });
