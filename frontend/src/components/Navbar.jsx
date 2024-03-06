@@ -12,17 +12,12 @@ const Navbar = () => {
   const navigate = useNavigate();
   const path = useLocation().pathname;
 
-  // // console.log(prompt)
-  // useEffect(() => {
-  //   // fetchPosts();
-  // }, prompt);
 
   const showMenu = () => {
     setMenu(!menu);
   };
 
   const { user } = useContext(UserContext);
-  // const user = false;
 
   return (
     <div className="flex items-center justify-between px-6 md:px-[200px] py-4">
