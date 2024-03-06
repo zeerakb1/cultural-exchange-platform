@@ -9,6 +9,10 @@ import { URL, IF } from "../url";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import Loader from "../components/Loader";
+import { HfInference } from "@huggingface/inference";
+const TOKEN_KEY = import.meta.env.VITE_SOME_KEY
+
+const hf = new HfInference(TOKEN_KEY);
 
 const PostDetails = () => {
   const postId = useParams().id;
@@ -17,6 +21,8 @@ const PostDetails = () => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [loader, setLoader] = useState(false);
+  const [audioSrc, setAudioSrc] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const fetchPost = async () => {
@@ -24,10 +30,22 @@ const PostDetails = () => {
     try {
       const res = await axios.get(URL + "/api/posts/" + postId);
       setPost(res.data);
-      setLoader(false)
+      setLoader(false);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleAudio = async () => {
+    setIsLoading(true);
+    const result = await hf.textToSpeech({
+      model: "espnet/kan-bayashi_ljspeech_vits",
+      inputs: post.desc,
+    });
+
+    const audioUrl = window.URL.createObjectURL(result);
+    setAudioSrc(audioUrl);
+    setIsLoading(false);
   };
 
   const handleDeletePost = async () => {
@@ -125,9 +143,13 @@ const PostDetails = () => {
               alt=""
             />
           ) : (
-            <img src={IF + post.photo} className="w-full  mx-auto mt-8" alt="" />
+            <img
+              src={IF + post.photo}
+              className="w-full  mx-auto mt-8"
+              alt=""
+            />
           )}
-          
+
           <p className="mx-auto mt-8">{post.desc}</p>
           <div className="flex items-center mt-8 space-x-4 font-semibold">
             <p>Categories:</p>
@@ -141,13 +163,28 @@ const PostDetails = () => {
               ))}
             </div>
           </div>
+          <div className="flex items-center mt-8 space-x-4 font-semibold">
+            {/* <button onClick={handleAudio}>Listen to Audio</button> */}
+            <button onClick={handleAudio} disabled={isLoading}>
+              {isLoading ? "Generating Audio..." : "Listen to Audio"}
+            </button>
+            {isLoading ? (
+              <div></div>
+            ) : (
+              audioSrc && (
+                <audio controls src={audioSrc}>
+                  Your browser does not support the audio element.
+                </audio>
+              )
+            )}
+          </div>
+
           <div className="flex flex-col mt-4">
             <h3 className="mt-6 mb-4 font-semibold">Comments:</h3>
             {comments?.map((c) => (
               <Comment key={c._id} c={c} post={post} />
             ))}
           </div>
-          
 
           <div className="w-full flex flex-col mt-4 md:flex-row">
             <input
