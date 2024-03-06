@@ -16,8 +16,8 @@ const ProfilePosts = ({ p }) => {
         <div className="flex mb-2 text-sm font-semibold text-gray-500 items-center justify-between md:mb-4">
           <p>@{p.username}</p>
           <div className="flex space-x-2">
-            <p>{new Date(p.updatedAt).toString().slice(0, 15)}</p>
-            <p>{new Date(p.updatedAt).toString().slice(16, 24)}</p>
+            <p>{new Date(p.updatedAt).toString().slice(3, 15)}</p>
+            <p>{new Date(p.updatedAt).toString().slice(16, 21)}</p>
           </div>
         </div>
         <p className="text-sm md:text-lg">
