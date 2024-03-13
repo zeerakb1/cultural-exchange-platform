@@ -56,7 +56,7 @@ const Profile = () => {
       console.log(err);
     }
   };
-  
+
   const fetchUserPosts = async () => {
     try {
       const res = await axios.get(URL + "/api/posts/user/" + user._id);
@@ -78,8 +78,8 @@ const Profile = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-[80vh] px-8 md:px-[200px] mt-8 flex md:flex-row flex-col-reverse md:items-start items-start">
-        <div className="flex flex-col md:w-[70%] w-full mt-8 md:mt-0">
+      <div className="md:min-h-[80vh] px-8 md:px-[200px] mt-8 flex md:flex-row flex-col-reverse md:items-start items-start">
+        <div className="flex flex-col md:w-[50%] xl:w-[70%] mt-8 md:mt-0 sm:px-0">
           {posts.length != 0 ? (
             <div>
               <h1 className="text-xl font-bold mb-4">Your posts:</h1>
@@ -91,7 +91,69 @@ const Profile = () => {
             <h1 className="text-xl font-bold mb-4">No posts available</h1>
           )}
         </div>
-        <div className="md:sticky md:top-12  flex justify-start md:justify-end items-start md:w-[30%] w-full md:items-end ">
+
+        <div className="w-full bg-white overflow-auto shadow rounded-lg border md:items-end md:sticky md:top-12 justify-start md:justify-end md:ml-10 md:w-[50%] xl:w-[30%]">
+          <div className="px-4 py-5 sm:px-6">
+            <h3 className="text-lg leading-6 font-medium text-gray-900">
+              Profile
+            </h3>
+          </div>
+          <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+            <dl className="sm:divide-y sm:divide-gray-200">
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Full name</dt>
+                <dd className="text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {/* John Doe */}
+                  <input
+                    onChange={(e) => setUsername(e.target.value)}
+                    value={username}
+                    // className="outline-none px-4 py-2 text-gray-500"
+                    placeholder="Your username"
+                    type="text"
+                  />
+                </dd>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">
+                  Email address
+                </dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {/* johndoe@example.com */}
+                  <input
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    placeholder="Your email"
+                    type="email"
+                  />
+                </dd>
+              </div>
+              <dd className="py-3 sm:py-5 lg:px-6 justify-between">
+              {/* <dd className="mt-3 text-sm text-gray-900 sm:mt-0 sm:col-span-2"> */}
+                <div className="flex items-center space-x-10 sm:space-x-4 xl:space-x-10">
+                  <button
+                    onClick={handleUserUpdate}
+                    className="text-white font-semibold bg-black px-8 py-2 hover:text-black hover:bg-gray-400"
+                  >
+                    Update
+                  </button>
+                  <button
+                    onClick={handleUserDelete}
+                    className="text-white font-semibold bg-black px-8 py-2 hover:text-black hover:bg-gray-400"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </dd>
+            </dl>
+          </div>
+          {updated && (
+            <h3 className="text-green-500 text-sm text-center mt-4">
+              User updated successfully!
+            </h3>
+          )}
+        </div>
+
+        {/* <div className="md:sticky md:top-12  flex justify-start md:justify-end items-start md:w-[30%] w-full md:items-end ">
           <div className=" flex flex-col space-y-4 items-start">
             <h1 className="text-xl font-bold mb-4">Profile</h1>
             <input
@@ -129,8 +191,9 @@ const Profile = () => {
               </h3>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
+
       <Footer />
     </div>
   );

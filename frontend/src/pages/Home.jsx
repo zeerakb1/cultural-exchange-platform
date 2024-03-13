@@ -1,5 +1,5 @@
 import Footer from "../components/Footer";
-import HomePosts from "../components/HomePosts";
+// import HomePosts from "../components/HomePosts";
 import Navbar from "../components/Navbar";
 import { UserContext } from "../context/UserContext";
 import { URL } from "../url";
@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
 import axios from "axios";
+import PostCard from "../components/PostCard";
 
 const Home = () => {
   const { search } = useLocation();
@@ -49,7 +50,8 @@ const Home = () => {
           posts.map((post) => (
             <>
               <Link to={user ? `/posts/post/${post._id}` : "/login"}>
-                <HomePosts key={post._id} post={post} />
+                {/* <HomePosts key={post._id} post={post} /> */}
+                <PostCard key={post._id} post={post} />
               </Link>
             </>
           ))
