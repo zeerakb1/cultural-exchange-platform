@@ -92,9 +92,9 @@ const Profile = () => {
           )}
         </div>
 
-        <div className="w-full bg-white overflow-auto shadow rounded-lg border md:items-end md:sticky md:top-12 justify-start md:justify-end md:ml-10 md:w-[50%] xl:w-[30%]">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">
+        <div className="w-full bg-txt overflow-auto shadow rounded-lg border md:items-end md:sticky md:top-12 justify-start md:justify-end md:ml-10 md:w-[50%] xl:w-[30%]">
+          <div className="px-4 py-5 sm:px-6 bg-tertiary">
+            <h3 className="text-lg leading-6 font-medium text-txt">
               Profile
             </h3>
           </div>
@@ -128,17 +128,16 @@ const Profile = () => {
                 </dd>
               </div>
               <dd className="py-3 sm:py-5 lg:px-6 justify-between">
-              {/* <dd className="mt-3 text-sm text-gray-900 sm:mt-0 sm:col-span-2"> */}
-                <div className="flex items-center space-x-10 sm:space-x-4 xl:space-x-10">
+                <div className="flex items-center space-x-10 sm:space-x-4 xl:space-x-10 rounded-lg">
                   <button
                     onClick={handleUserUpdate}
-                    className="text-white font-semibold bg-black px-8 py-2 hover:text-black hover:bg-gray-400"
+                    className="text-txt font-semibold bg-btn px-8 py-2 hover:bg-primary"
                   >
                     Update
                   </button>
                   <button
                     onClick={handleUserDelete}
-                    className="text-white font-semibold bg-black px-8 py-2 hover:text-black hover:bg-gray-400"
+                    className="text-txt font-semibold bg-btn px-8 py-2 hover:bg-primary"
                   >
                     Delete
                   </button>

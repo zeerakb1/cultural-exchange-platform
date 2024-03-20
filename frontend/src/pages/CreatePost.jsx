@@ -124,7 +124,7 @@ const CreatePost = () => {
                 <input
                   onChange={(e) => setFile(e.target.files[0])}
                   type="file"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="bg-txt border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 />
               </div>
 
@@ -148,7 +148,7 @@ const CreatePost = () => {
                     <button
                       type="button"
                       onClick={addCategory}
-                      className="bg-blue-500 text-white text-sm rounded-r-lg p-2.5 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-600"
+                      className="bg-btn text-sm font-medium text-txt rounded-r-lg p-2.5 hover:bg-primary"
                     >
                       Add
                     </button>
@@ -166,7 +166,7 @@ const CreatePost = () => {
                 <button
                   type="submit"
                   onClick={handleRecommendedCats}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="bg-btn border border-gray-300 text-sm font-medium text-txt rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:text-txt dark:focus:ring-primary-500 dark:focus:border-primary-500 hover:bg-primary"
                 >
                   Get Recommendations
                 </button>
@@ -217,7 +217,7 @@ const CreatePost = () => {
             <button
               type="submit"
               onClick={handleCreate}
-              className="w-full inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-blue-500 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-600"
+              className="w-full px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-txt bg-btn rounded-lg hover:bg-primary"
             >
               Add Post
             </button>

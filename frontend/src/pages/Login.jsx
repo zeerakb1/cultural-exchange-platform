@@ -42,9 +42,8 @@ const Login = () => {
 
       <div className="py-6 flex flex-col justify-center sm:py-12">
         <div className="relative py-3 sm:max-w-xl sm:mx-auto">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-500 to-gray-900 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-          {/* <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div> */}
-          <div className="relative mx-4 md:mx-0 px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+          <div className="absolute inset-0 bg-gradient-to-r from-tertiary to-btn shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
+          <div className="relative mx-4 md:mx-0 px-4 py-10 bg-txt shadow-lg sm:rounded-3xl sm:p-20">
             <div className="max-w-md mx-auto">
               <div>
                 <h1 className="text-2xl font-semibold">
@@ -52,7 +51,7 @@ const Login = () => {
                 </h1>
               </div>
               <div className="divide-y divide-gray-200">
-                <div className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
+                <div className="py-8 text-base leading-6 space-y-6 text-gray-700 sm:text-lg sm:leading-7">
                   <div className="relative">
                     <input
                       autoComplete="off"
@@ -87,7 +86,7 @@ const Login = () => {
                   <div className="relative">
                     <button
                       onClick={handleLogin}
-                      className="w-full bg-black text-white rounded-md px-3 py-2"
+                      className="w-full bg-btn text-txt rounded-md px-3 py-2"
                     >
                       Login
                     </button>
@@ -98,7 +97,7 @@ const Login = () => {
                     )}
                     <div className="flex text-sm justify-center items-center space-x-2 space-y-1">
                       <p>New here?</p>
-                      <p className="text-gray-500 hover:text-black">
+                      <p className="text-primary hover:text-tertiary font-bold">
                         <Link to="/register">Register</Link>
                       </p>
                     </div>

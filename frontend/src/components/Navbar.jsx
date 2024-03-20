@@ -19,14 +19,14 @@ const Navbar = () => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className="flex items-center justify-between px-6 md:px-[200px] py-4 space-x-4">
-      <h1 className="text-lg md:text-xl font-extrabold">
+    <div className="flex items-center justify-between px-6 md:px-[200px] py-4 space-x-4 bg-primary">
+      <h1 className="text-lg md:text-xl font-extrabold text-txt">
         <Link to="/">Cultural Exchange</Link>
       </h1>
 
       {path === "/" && (
-        <div className="max-w-md mx-auto md:w-[2500px]">
-          <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
+        <div className="max-w-md mx-auto md:w-[2500px] bg-txt rounded-lg">
+          <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-txt overflow-hidden">
             <div
               className="grid place-items-center h-full w-12 text-gray-300"
               onClick={() =>
@@ -110,7 +110,7 @@ const Navbar = () => {
           />
         </div>
       )} */}
-      <div className="hidden md:flex items-center justify-center space-x-2 md:space-x-4">
+      <div className="text-txt hidden md:flex items-center justify-center space-x-2 md:space-x-4">
         {user ? (
           <h3>
             <Link to="/write">Write</Link>
@@ -123,7 +123,7 @@ const Navbar = () => {
         {user ? (
           <div onClick={showMenu}>
             <p className="cursor-pointer relative">
-              <FaBars />
+              <FaBars color="#FEFEFE" />
             </p>
             {menu && <Menu />}
           </div>
@@ -135,7 +135,7 @@ const Navbar = () => {
       </div>
       <div onClick={showMenu} className="md:hidden text-lg">
         <p className="cursor-pointer relative">
-          <FaBars />
+          <FaBars color="#FEFEFE" />
         </p>
         {menu && <Menu />}
       </div>
