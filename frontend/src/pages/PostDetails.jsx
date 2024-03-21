@@ -178,13 +178,28 @@ const PostDetails = () => {
         { withCredentials: true }
       );
 
-      window.location.reload(true);
-      // navigate('/posts/post/' + postId)
+      setComments((prevComments) => [...prevComments, res.data]);
+
+      // Clear the input field after posting the comment
+      setComment("");
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const deleteComment = async (id) => {
+    try {
+      await axios.delete(URL + "/api/comments/" + id, {
+        withCredentials: true,
+      });
+      // window.location.reload(true);
+      setComments(comments.filter(comment => comment._id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
 
   return (
     <div>
@@ -348,7 +363,7 @@ const PostDetails = () => {
             ) : (
               audioSrc && (
                 <div className="relative w-full">
-                  <AudioPlayer src={audioSrc}/>
+                  <AudioPlayer src={audioSrc} />
                   {/* <audio controls src={audioSrc} className="w-full">
                     Your browser does not support the audio element.
                   </audio> */}
@@ -360,7 +375,7 @@ const PostDetails = () => {
           <div className="flex flex-col mt-4">
             <h3 className="mt-6 mb-4 font-semibold">Comments:</h3>
             {comments?.map((c) => (
-              <Comment key={c._id} c={c} post={post} />
+              <Comment key={c._id} c={c} deleteComment={deleteComment}/>
             ))}
           </div>
 

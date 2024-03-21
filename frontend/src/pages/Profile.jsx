@@ -17,6 +17,11 @@ const Profile = () => {
   const [posts, setPosts] = useState([]);
   const [updated, setUpdated] = useState(false);
 
+  useEffect(() => {
+      fetchProfile();
+      fetchUserPosts();
+  }, [param, user])
+
   const fetchProfile = async () => {
     try {
       const res = await axios.get(URL + "/api/users/" + user._id);
@@ -67,13 +72,13 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    fetchProfile();
-  }, [param]);
+  // useEffect(() => {
+  //   fetchProfile();
+  // }, [param]);
 
-  useEffect(() => {
-    fetchUserPosts();
-  }, [param]);
+  // useEffect(() => {
+  //   fetchUserPosts();
+  // }, [param]);
 
   return (
     <div>
@@ -94,9 +99,7 @@ const Profile = () => {
 
         <div className="w-full bg-txt overflow-auto shadow rounded-lg border md:items-end md:sticky md:top-12 justify-start md:justify-end md:ml-10 md:w-[50%] xl:w-[30%]">
           <div className="px-4 py-5 sm:px-6 bg-tertiary">
-            <h3 className="text-lg leading-6 font-medium text-txt">
-              Profile
-            </h3>
+            <h3 className="text-lg leading-6 font-medium text-txt">Profile</h3>
           </div>
           <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
             <dl className="sm:divide-y sm:divide-gray-200">
@@ -107,7 +110,6 @@ const Profile = () => {
                   <input
                     onChange={(e) => setUsername(e.target.value)}
                     value={username}
-                    // className="outline-none px-4 py-2 text-gray-500"
                     placeholder="Your username"
                     type="text"
                   />

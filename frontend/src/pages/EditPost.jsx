@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { ImCross } from "react-icons/im";
+// import { ImCross } from "react-icons/im";
+import { IoClose } from "react-icons/io5";
 import axios from "axios";
 import { URL } from "../url";
 import { useNavigate, useParams } from "react-router-dom";
@@ -49,12 +50,12 @@ const EditPost = () => {
       //img upload
       try {
         const imgUpload = await axios.post(URL + "/api/upload", data);
-        console.log(imgUpload.data)
+        console.log(imgUpload.data);
       } catch (err) {
         console.log(err);
       }
     }
-    
+
     //post upload
     try {
       const res = await axios.put(URL + "/api/posts/" + postId, post, {
@@ -85,7 +86,121 @@ const EditPost = () => {
   return (
     <div>
       <Navbar />
-      <div className="px-6 md:px-[200px] mt-8">
+
+      <section className="bg-white dark:bg-gray-900">
+        <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+          <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+            Update your Post
+          </h2>
+          <form action="#">
+            <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="name"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Post Title
+                </label>
+                <input
+                  onChange={(e) => setTitle(e.target.value)}
+                  type="text"
+                  value={title}
+                  placeholder="Enter post title"
+                  name="name"
+                  id="name"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  required
+                />
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="name"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Upload Image
+                </label>
+                <input
+                  onChange={(e) => setFile(e.target.files[0])}
+                  type="file"
+                  className="bg-txt border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                />
+              </div>
+
+              <div className="sm:col-span-2">
+                <div >
+                  <label
+                    htmlFor="name"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Category
+                  </label>
+                  <div className="flex">
+                    <input
+                      value={cat}
+                      onChange={(e) => setCat(e.target.value)}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 rounded-l-lg"
+                      // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-l-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      placeholder="Enter post category"
+                      type="text"
+                    />
+                    <button
+                      type="button"
+                      onClick={addCategory}
+                      className="bg-btn text-sm font-medium text-txt rounded-r-lg p-2.5 hover:bg-primary"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <div className="flex mt-3 mr-4 flex-wrap space-y-2">
+                  {cats?.map((c, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-center items-center space-x-2 mr-4 text-txt bg-primary px-2 py-1 rounded-md border-2 border-btn"
+                    >
+                      <p>{c}</p>
+                      <p
+                        onClick={() => deleteCategory(i)}
+                        className="text-txt bg-tertiary rounded-full cursor-pointer text-sm p-0.5"
+                      >
+                        <IoClose />
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="description"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Description
+                </label>
+                <textarea
+                  onChange={(e) => setDesc(e.target.value)}
+                  placeholder="Enter post description"
+                  id="description"
+                  rows="8"
+                  value={desc}
+                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                ></textarea>
+              </div>
+            </div>
+            <button
+              type="submit"
+              onClick={handleUpdate}
+              className="w-full px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-txt bg-btn rounded-lg hover:bg-primary"
+            >
+              Update Post
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* <div className="px-6 md:px-[200px] mt-8">
         <h1 className="font-bold md:text-2xl text-xl ">Update a post</h1>
         <form className="w-full flex flex-col space-y-4 md:space-y-8 mt-4">
           <input
@@ -111,25 +226,25 @@ const EditPost = () => {
               />
               <div
                 onClick={addCategory}
-                className="bg-black text-white px-4 py-2 font-semibold cursor-pointer"
+                className="bg-btn text-txt px-4 py-2 font-semibold cursor-pointer"
               >
                 Add
               </div>
             </div>
 
-            {/* categories */}
+
             <div className="flex px-4 mt-3">
               {cats?.map((c, i) => (
                 <div
                   key={i}
-                  className="flex justify-center items-center space-x-2 mr-4 bg-gray-200 px-2 py-1 rounded-md"
+                  className="flex justify-center items-center space-x-2 mr-4 text-txt bg-primary px-2 py-1 rounded-md border-2 border-btn"
                 >
                   <p>{c}</p>
                   <p
                     onClick={() => deleteCategory(i)}
-                    className="text-white bg-black rounded-full cursor-pointer p-1 text-sm"
+                    className="text-txt bg-tertiary rounded-full cursor-pointer text-sm p-0.5"
                   >
-                    <ImCross />
+                    <IoClose />
                   </p>
                 </div>
               ))}
@@ -150,7 +265,7 @@ const EditPost = () => {
             Update
           </button>
         </form>
-      </div>
+      </div> */}
       <Footer />
     </div>
   );

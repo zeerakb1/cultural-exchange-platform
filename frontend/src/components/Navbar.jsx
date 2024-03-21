@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
-// import { BsSearch } from "react-icons/bs";
+import { MdAddCircleOutline } from "react-icons/md";
 import { FaBars } from "react-icons/fa";
 import { UserContext } from "../context/UserContext";
 
@@ -113,7 +113,8 @@ const Navbar = () => {
       <div className="text-txt hidden md:flex items-center justify-center space-x-2 md:space-x-4">
         {user ? (
           <h3>
-            <Link to="/write">Write</Link>
+            <Link to="/write"><MdAddCircleOutline className="h-6 w-6" /></Link>
+            {/* <Link to="/write">Write</Link> */}
           </h3>
         ) : (
           <h3>

@@ -4,9 +4,21 @@ import { IF } from "../url";
 const ProfilePosts = ({ p }) => {
   return (
     <div className="w-full flex mt-8 space-x-4">
-
       <div className="w-[35%] h-[200px] flex justify-center items-center">
-        <img src={IF + p.photo} alt="" className="h-full w-full object-cover" />
+        {/* <img src={IF + p.photo} alt="" className="h-full w-full object-cover" /> */}
+        {!p.photo ? (
+          <img
+            src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg"
+            className="h-full w-full object-cover"
+            alt=""
+          />
+        ) : (
+          <img
+            src={IF + p.photo}
+            className="h-full w-full object-cover"
+            alt=""
+          />
+        )}
       </div>
 
       <div className="flex flex-col w-[65%]">
