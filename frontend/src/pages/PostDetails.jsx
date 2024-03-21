@@ -10,6 +10,8 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import Loader from "../components/Loader";
 import { HfInference } from "@huggingface/inference";
+import AudioPlayer from "../components/AudioPlayer";
+// import DropDown from "../components/DropDown";
 const TOKEN_KEY = import.meta.env.VITE_SOME_KEY;
 
 const hf = new HfInference(TOKEN_KEY);
@@ -176,13 +178,28 @@ const PostDetails = () => {
         { withCredentials: true }
       );
 
-      window.location.reload(true);
-      // navigate('/posts/post/' + postId)
+      setComments((prevComments) => [...prevComments, res.data]);
+
+      // Clear the input field after posting the comment
+      setComment("");
       console.log(res.data);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const deleteComment = async (id) => {
+    try {
+      await axios.delete(URL + "/api/comments/" + id, {
+        withCredentials: true,
+      });
+      // window.location.reload(true);
+      setComments(comments.filter(comment => comment._id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  
 
   return (
     <div>
@@ -211,7 +228,7 @@ const PostDetails = () => {
               </div>
             )}
           </div>
-          <div className="flex items-center justify-between mt-2 md:mt-4">
+          <div className="flex items-center justify-between mt-2 md:mt-4 font-bold">
             <p>@{post.username}</p>
             <div className="flex space-x-2">
               <p>{new Date(post.updatedAt).toString().slice(3, 15)}</p>
@@ -246,13 +263,33 @@ const PostDetails = () => {
               </div>
             )
           ) : (
-            <div>
-              <h3 className="mx-auto mt-8">Translating...</h3>
+            <div className="flex justify-center items-center mx-auto mt-8 space-x-2">
+              <h4 className="font-bold text-lg">Translating</h4>
+              <div className="relative">
+                <div className="h-4 w-4 rounded-full border-t-2 border-b-2 border-tertiary"></div>
+                <div className="absolute top-0 left-0 h-4 w-4 rounded-full border-t-2 border-b-2 border-primary animate-spin"></div>
+              </div>
             </div>
           )}
 
-          <div className="flex flex-wrap items-center mt-8 space-x-4 font-semibold">
-            <p>Categories:</p>
+          <div className="flex md:flex-wrap items-center mt-8 space-x-4 font-semibold md:justify-between">
+            <div className="pl-0 p-3">
+              {/* <p>Categories:</p> */}
+              <div className="flex flex-wrap justify-start items-center space-x-2">
+                <p>Categories:</p>
+                {post.categories?.map((c, i) => (
+                  <>
+                    <div
+                      key={i}
+                      className="bg-tertiary text-txt rounded-lg px-3 py-1 mt-3 lg:mt-0"
+                    >
+                      {c}
+                    </div>
+                  </>
+                ))}
+              </div>
+            </div>
+            {/* <p>Categories:</p>
             <div className="flex flex-wrap justify-start items-center space-x-2">
               {post.categories?.map((c, i) => (
                 <>
@@ -261,8 +298,8 @@ const PostDetails = () => {
                   </div>
                 </>
               ))}
-            </div>
-            <div className="flex flex-wrap justify-end space-x-2">
+            </div> */}
+            {/* <div className="flex flex-wrap justify-end space-x-2">
               <label htmlFor="language-select">Choose a language:</label>
               <select
                 id="language-select"
@@ -275,10 +312,31 @@ const PostDetails = () => {
                   </option>
                 ))}
               </select>
+            </div> */}
+
+            <div className="flex flex-wrap justify-end space-x-2">
+              <label
+                htmlFor="language-select"
+                className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Choose a language:
+              </label>
+              <select
+                id="language-select"
+                value={selectedLanguage}
+                onChange={handleLanguageChange}
+                className="block text-xs sm:text-sm text-txt md:w-[70%] py-2 px-3 border border-gray-300 bg-btn rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:font-bold bor"
+              >
+                {Object.entries(languageMapping).map(([language, code]) => (
+                  <option key={code} value={language}>
+                    {language}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          <div className="flex items-center mt-8 space-x-4 font-semibold">
+          {/* <div className="flex items-center mt-8 space-x-4 font-semibold">
             <button onClick={handleAudio} disabled={isLoading}>
               {isLoading ? "Generating Audio..." : "Listen to Audio"}
             </button>
@@ -291,12 +349,33 @@ const PostDetails = () => {
                 </audio>
               )
             )}
+          </div> */}
+          <div className="flex items-center mt-8 space-x-4 font-semibold">
+            <button
+              onClick={handleAudio}
+              disabled={isLoading}
+              className="inline-flex items-center justify-center px-4 py-2 bg-btn text-txt text-sm font-medium leading-6 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition ease-in-out duration-150"
+            >
+              {isLoading ? "Generating Audio..." : "Listen to Audio"}
+            </button>
+            {isLoading ? (
+              <div>{"  "}</div>
+            ) : (
+              audioSrc && (
+                <div className="relative w-full">
+                  <AudioPlayer src={audioSrc} />
+                  {/* <audio controls src={audioSrc} className="w-full">
+                    Your browser does not support the audio element.
+                  </audio> */}
+                </div>
+              )
+            )}
           </div>
 
           <div className="flex flex-col mt-4">
             <h3 className="mt-6 mb-4 font-semibold">Comments:</h3>
             {comments?.map((c) => (
-              <Comment key={c._id} c={c} post={post} />
+              <Comment key={c._id} c={c} deleteComment={deleteComment}/>
             ))}
           </div>
 
@@ -305,11 +384,11 @@ const PostDetails = () => {
               onChange={(e) => setComment(e.target.value)}
               type="text"
               placeholder="Write a comment"
-              className="md:w-[80%] outline-none py-2 px-4 mt-4 md:mt-0"
+              className="md:w-[80%] rounded-lg outline-none py-2 px-4 mt-4 md:mt-0 md:mr-4"
             />
             <button
               onClick={postComment}
-              className="bg-black text-sm text-white px-2 py-2 md:w-[20%] mt-4 md:mt-0"
+              className="bg-btn text-sm text-txt rounded-lg px-2 py-2 md:w-[20%] mt-4 md:mt-0"
             >
               Add Comment
             </button>

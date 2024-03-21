@@ -10,14 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^1.0.6",
     "@huggingface/inference": "^2.6.4",
     "@xenova/transformers": "^2.15.1",
     "axios": "^1.6.7",
     "dotenv": "^16.4.5",
+    "fix-webm-duration": "^1.0.5",
+    "heroicons": "^2.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-howler": "^5.2.0",
     "react-icons": "^5.0.1",
-    "react-router-dom": "^6.22.1"
+    "react-router-dom": "^6.22.1",
+    "webm-duration-fix": "^1.0.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
