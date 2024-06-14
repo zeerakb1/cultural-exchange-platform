@@ -89,7 +89,8 @@ const CreatePost = () => {
   return (
     <div>
       <Navbar />
-      <section className="bg-white dark:bg-gray-900">
+      <div className="md:min-h-[80vh] px-8 md:px-[200px] mt-8 flex md:flex-row flex-col-reverse md:items-start items-start">
+      {/* <div className="bg-white dark:bg-gray-900"> */}
         <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
           <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
             Add a new Post
@@ -223,7 +224,7 @@ const CreatePost = () => {
             </button>
           </form>
         </div>
-      </section>
+      </div>
 
       
       <Footer />

@@ -5,6 +5,10 @@ const bcrypt = require("bcrypt");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const verifyToken = require('../verifyToken')
+const axios = require('axios');
+// import { pipeline, env } from '@xenova/transformers';
+
+// const pipe = await pipeline('espnet/kan-bayashi_ljspeech_vits')
 
 // Create
 router.post("/create", verifyToken, async (req, res) => {
@@ -18,7 +22,7 @@ router.post("/create", verifyToken, async (req, res) => {
 });
 
 // Edit
-router.put("/:id", verifyToken,  async (req, res) => {
+router.put("/:id", verifyToken, async (req, res) => {
   try {
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
@@ -63,6 +67,33 @@ router.get("/", async (req, res) => {
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+// Get All Posts
+router.post('/synthesize', async (req, res) => {
+  const { text } = req.body;
+  try {
+    const response = await axios.post(
+      'https://api-inference.huggingface.co/models/facebook/mms-tts-eng',
+      JSON.stringify({ inputs: text }),
+      {
+          headers: {
+              'Authorization': `Bearer ${process.env.HUGGINFACE_TOKEN}`,
+              'Content-Type': 'application/json',
+              'responseType': 'arraybuffer'
+          },
+          responseType: 'arraybuffer'
+      }
+  );
+
+  res.writeHead(200, {
+      'Content-Type': 'audio/wav',
+      'Content-Length': response.data.length
+  });
+  res.end(Buffer.from(response.data));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 

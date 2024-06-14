@@ -9,12 +9,14 @@ import { URL, IF } from "../url";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import Loader from "../components/Loader";
-import { HfInference } from "@huggingface/inference";
-import AudioPlayer from "../components/AudioPlayer";
+// import { HfInference } from "@huggingface/inference";
+// import AudioPlayer from "../components/AudioPlayer";
+import SpeechPlayer from "../components/SpeechPlayer";
 // import DropDown from "../components/DropDown";
-const TOKEN_KEY = import.meta.env.VITE_SOME_KEY;
+// const TOKEN_KEY = import.meta.env.VITE_SOME_KEY;
+const TOKEN_KEY = import.meta.env.VITE_RAPID_API_KEY;
 
-const hf = new HfInference(TOKEN_KEY);
+// const hf = new HfInference(TOKEN_KEY);
 
 const PostDetails = () => {
   const postId = useParams().id;
@@ -23,68 +25,86 @@ const PostDetails = () => {
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [loader, setLoader] = useState(false);
-  const [audioSrc, setAudioSrc] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // const [audioSrc, setAudioSrc] = useState("");
+  // const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const [selectedLanguage, setSelectedLanguage] = useState("English");
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const [isAudioReady, setIsAudioReady] = useState(false);
   // const original = post ? post.desc : "";
   const [converting, setConverting] = useState(false);
   const [text, setText] = useState("");
-
-  const languageMapping = {
-    Arabic: "ar_AR",
-    Czech: "cs_CZ",
-    German: "de_DE",
-    English: "en_XX",
-    Spanish: "es_XX",
-    Estonian: "et_EE",
-    Finnish: "fi_FI",
-    French: "fr_XX",
-    Gujarati: "gu_IN",
-    Hindi: "hi_IN",
-    Italian: "it_IT",
-    Japanese: "ja_XX",
-    Kazakh: "kk_KZ",
-    Korean: "ko_KR",
-    Lithuanian: "lt_LT",
-    Latvian: "lv_LV",
-    Burmese: "my_MM",
-    Nepali: "ne_NP",
-    Dutch: "nl_XX",
-    Romanian: "ro_RO",
-    Russian: "ru_RU",
-    Sinhala: "si_LK",
-    Turkish: "tr_TR",
-    Vietnamese: "vi_VN",
-    Chinese: "zh_CN",
-    Afrikaans: "af_ZA",
-    Azerbaijani: "az_AZ",
-    Bengali: "bn_IN",
-    Persian: "fa_IR",
-    Hebrew: "he_IL",
-    Croatian: "hr_HR",
-    Indonesian: "id_ID",
-    Georgian: "ka_GE",
-    Khmer: "km_KH",
-    Macedonian: "mk_MK",
-    Malayalam: "ml_IN",
-    Mongolian: "mn_MN",
-    Marathi: "mr_IN",
-    Polish: "pl_PL",
-    Pashto: "ps_AF",
-    Portuguese: "pt_XX",
-    Swedish: "sv_SE",
-    Swahili: "sw_KE",
-    Tamil: "ta_IN",
-    Telugu: "te_IN",
-    Thai: "th_TH",
-    Tagalog: "tl_XX",
-    Ukrainian: "uk_UA",
-    Urdu: "ur_PK",
-    Xhosa: "xh_ZA",
-    Galician: "gl_ES",
-    Slovene: "sl_SI",
+  const toggleAudioPlayer = () => {
+    setIsAudioReady(!isAudioReady); // Toggle visibility of the TextToSpeechPlayer
   };
+
+
+  const languages = {
+    "af": { "name": "Afrikaans" },
+    "am": { "name": "Amharic" },
+    "ar": { "name": "Arabic" },
+    "az": { "name": "Azerbaijani" },
+    "bg": { "name": "Bulgarian" },
+    "bn": { "name": "Bangla" },
+    "bs": { "name": "Bosnian" },
+    "ca": { "name": "Catalan" },
+    "cs": { "name": "Czech" },
+    "cy": { "name": "Welsh" },
+    "da": { "name": "Danish" },
+    "de": { "name": "German" },
+    "el": { "name": "Greek" },
+    "en": { "name": "English" },
+    "es": { "name": "Spanish" },
+    "et": { "name": "Estonian" },
+    "fa": { "name": "Persian" },
+    "fi": { "name": "Finnish" },
+    "fr": { "name": "French" },
+    "he": { "name": "Hebrew" },
+    "hi": { "name": "Hindi" },
+    "hr": { "name": "Croatian" },
+    "hu": { "name": "Hungarian" },
+    "hy": { "name": "Armenian" },
+    "id": { "name": "Indonesian" },
+    "is": { "name": "Icelandic" },
+    "it": { "name": "Italian" },
+    "ja": { "name": "Japanese" },
+    "ka": { "name": "Georgian" },
+    "kk": { "name": "Kazakh" },
+    "km": { "name": "Khmer" },
+    "kn": { "name": "Kannada" },
+    "ko": { "name": "Korean" },
+    "lt": { "name": "Lithuanian" },
+    "lv": { "name": "Latvian" },
+    "mk": { "name": "Macedonian" },
+    "ml": { "name": "Malayalam" },
+    "mn": { "name": "Mongolian" },
+    "mr": { "name": "Marathi" },
+    "ms": { "name": "Malay" },
+    "my": { "name": "Burmese" },
+    "ne": { "name": "Nepali" },
+    "nl": { "name": "Dutch" },
+    "no": { "name": "Norwegian" },
+    "pa": { "name": "Punjabi" },
+    "pl": { "name": "Polish" },
+    "pt": { "name": "Portuguese" },
+    "ro": { "name": "Romanian" },
+    "ru": { "name": "Russian" },
+    "sk": { "name": "Slovak" },
+    "sl": { "name": "Slovenian" },
+    "so": { "name": "Somali" },
+    "sq": { "name": "Albanian" },
+    "sv": { "name": "Swedish" },
+    "sw": { "name": "Swahili" },
+    "ta": { "name": "Tamil" },
+    "te": { "name": "Telugu" },
+    "th": { "name": "Thai" },
+    "tr": { "name": "Turkish" },
+    "uk": { "name": "Ukrainian" },
+    "ur": { "name": "Urdu" },
+    "vi": { "name": "Vietnamese" },
+    "zh": { "name": "Chinese" }
+  };
+
+
 
   const fetchPost = async () => {
     setLoader(true);
@@ -101,36 +121,88 @@ const PostDetails = () => {
 
   const handleLanguageChange = async (e) => {
     setConverting(true);
-    if (e.target.value !== "English") {
-      setSelectedLanguage(e.target.value);
-      console.log(e.target.value, languageMapping[e.target.value]);
-      const res = await hf.translation({
-        model: "facebook/mbart-large-50-many-to-many-mmt",
-        inputs: text,
-        parameters: {
-          src_lang: "en_XX",
-          tgt_lang: languageMapping[e.target.value],
-        },
-      });
-      setText(res.translation_text);
+    const langCode = e.target.value;
+    if (langCode !== "en") {
+      try {
+        const options = {
+          method: 'POST',
+          url: 'https://microsoft-translator-text.p.rapidapi.com/translate',
+          params: {
+            to: selectedLanguage,
+            'api-version': '3.0',
+            profanityAction: 'NoAction',
+            textType: 'plain'
+          },
+          headers: {
+            'content-type': 'application/json',
+            'x-rapidapi-key': TOKEN_KEY,
+            'x-rapidapi-host': 'microsoft-translator-text.p.rapidapi.com'
+          },
+          data: JSON.stringify([{ "Text": post.desc }])
+        };
+
+
+        const res = await axios.request(options);
+        // console.log(post.desc, res.data, res.data[0].translations[0].text, selectedLanguage)
+        setText(res.data[0].translations[0].text);
+      } catch (error) {
+        console.error('Error during translation:', error);
+        setText(post.desc); 
+      }
+
+
     } else {
-      setSelectedLanguage(e.target.value);
-      setText(post.desc);
+      setText(post.desc); 
     }
     setConverting(false);
+    setSelectedLanguage(langCode);
   };
 
-  const handleAudio = async () => {
-    setIsLoading(true);
-    const result = await hf.textToSpeech({
-      model: "espnet/kan-bayashi_ljspeech_vits",
-      inputs: post.desc,
-    });
+  // const handleAudio = async () => {
+  //   setIsLoading(true);
+  //   const result = await hf.textToSpeech({
+  //     model: "espnet/kan-bayashi_ljspeech_vits",
+  //     inputs: post.desc,
+  //   });
 
-    const audioUrl = window.URL.createObjectURL(result);
-    setAudioSrc(audioUrl);
-    setIsLoading(false);
-  };
+  //   const audioUrl = window.URL.createObjectURL(result);
+  //   setAudioSrc(audioUrl);
+  //   setIsLoading(false);
+  // };
+
+
+  // const handleSynthesize = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     // const response = await axios.post(URL + "/api/posts/synthesize", { text: post.desc }, { responseType: 'blob' });
+  //     // const audioUrl = window.URL.createObjectURL(response.data);
+  //     // console.log(response.data)
+  //     const options = {
+  //       method: 'POST',
+  //       url: 'https://open-ai-text-to-speech1.p.rapidapi.com/',
+  //       headers: {
+  //         'x-rapidapi-key': '15dd1f83eamsh5f20f2884148690p159830jsn645b487f89e2', 
+  //         'x-rapidapi-host': 'open-ai-text-to-speech1.p.rapidapi.com',
+  //         'Content-Type': 'application/json'
+  //       },
+  //       data: {
+  //         model: 'tts-1',
+  //         input: post.desc,
+  //         voice: 'alloy'
+  //       },
+  //       responseType: 'blob' // Setting the response type to 'blob' to handle binary data
+  //     };
+  //     const response = await axios.request(options);
+  //     const audioUrl = window.URL.createObjectURL(response.data); 
+  //     setAudioSrc(audioUrl);
+  //     setIsLoading(false);
+  //   } catch (error) {
+  //     console.error('Error synthesizing text:', error);
+  //   }
+  // };
+
+
+
 
   const handleDeletePost = async () => {
     try {
@@ -199,7 +271,7 @@ const PostDetails = () => {
       console.log(err);
     }
   };
-  
+
 
   return (
     <div>
@@ -251,7 +323,7 @@ const PostDetails = () => {
 
           {/* <p className="mx-auto mt-8">{post.desc}</p> */}
           {!converting ? (
-            selectedLanguage !== "English" ? (
+            selectedLanguage !== "en" ? (
               <div>
                 {/* <h3>Text:</h3> */}
                 <p className="mx-auto mt-8">{text}</p>
@@ -289,30 +361,7 @@ const PostDetails = () => {
                 ))}
               </div>
             </div>
-            {/* <p>Categories:</p>
-            <div className="flex flex-wrap justify-start items-center space-x-2">
-              {post.categories?.map((c, i) => (
-                <>
-                  <div key={i} className="bg-gray-300 rounded-lg px-3 py-1 mt-3 lg:mt-0">
-                    {c}
-                  </div>
-                </>
-              ))}
-            </div> */}
-            {/* <div className="flex flex-wrap justify-end space-x-2">
-              <label htmlFor="language-select">Choose a language:</label>
-              <select
-                id="language-select"
-                value={selectedLanguage}
-                onChange={handleLanguageChange}
-              >
-                {Object.entries(languageMapping).map(([language, code]) => (
-                  <option key={code} value={language}>
-                    {language}
-                  </option>
-                ))}
-              </select>
-            </div> */}
+
 
             <div className="flex flex-wrap justify-end space-x-2">
               <label
@@ -321,7 +370,18 @@ const PostDetails = () => {
               >
                 Choose a language:
               </label>
-              <select
+
+              <select id="language-select" value={selectedLanguage}
+                onChange={handleLanguageChange}
+                className="block text-xs sm:text-sm text-txt md:w-[70%] py-2 px-3 border border-gray-300 bg-btn rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:font-bold bor"
+              >
+                {Object.entries(languages).map(([key, value]) => (
+                  <option key={key} value={key}>{value.name}</option>
+                ))}
+              </select>
+
+
+              {/* <select
                 id="language-select"
                 value={selectedLanguage}
                 onChange={handleLanguageChange}
@@ -332,27 +392,16 @@ const PostDetails = () => {
                     {language}
                   </option>
                 ))}
-              </select>
+              </select> */}
+
+
             </div>
           </div>
 
+
           {/* <div className="flex items-center mt-8 space-x-4 font-semibold">
-            <button onClick={handleAudio} disabled={isLoading}>
-              {isLoading ? "Generating Audio..." : "Listen to Audio"}
-            </button>
-            {isLoading ? (
-              <div>{"  "}</div>
-            ) : (
-              audioSrc && (
-                <audio controls src={audioSrc}>
-                  Your browser does not support the audio element.
-                </audio>
-              )
-            )}
-          </div> */}
-          <div className="flex items-center mt-8 space-x-4 font-semibold">
             <button
-              onClick={handleAudio}
+              onClick={handleSynthesize}
               disabled={isLoading}
               className="inline-flex items-center justify-center px-4 py-2 bg-btn text-txt text-sm font-medium leading-6 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition ease-in-out duration-150"
             >
@@ -364,18 +413,30 @@ const PostDetails = () => {
               audioSrc && (
                 <div className="relative w-full">
                   <AudioPlayer src={audioSrc} />
-                  {/* <audio controls src={audioSrc} className="w-full">
-                    Your browser does not support the audio element.
-                  </audio> */}
                 </div>
               )
             )}
+          </div> */}
+
+          <div className="flex items-center mt-8 space-x-4 font-semibold">
+            <button
+              onClick={toggleAudioPlayer}
+              className="inline-flex items-center justify-center px-4 py-2 bg-btn text-txt text-sm font-medium leading-6 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 transition ease-in-out duration-150"
+            >
+              {isAudioReady ? "Hide Audio Player" : "Listen to Audio"}
+            </button>
+            {isAudioReady && (
+              <div className="relative w-full">
+                <SpeechPlayer text={post.desc} />
+              </div>
+            )}
           </div>
+
 
           <div className="flex flex-col mt-4">
             <h3 className="mt-6 mb-4 font-semibold">Comments:</h3>
             {comments?.map((c) => (
-              <Comment key={c._id} c={c} deleteComment={deleteComment}/>
+              <Comment key={c._id} c={c} deleteComment={deleteComment} />
             ))}
           </div>
 
