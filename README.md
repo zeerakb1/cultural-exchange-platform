@@ -9,6 +9,7 @@ The Cultural Exchange Platform is a blog application designed for international 
 Check out the live demo: [Cultural Exchange Platform](https://cultural-exchange-app.onrender.com)
 
 > **Note:** The app might work slow due to the limitations of Render.com, which is a free cloud-based hosting provider service.
+<img src="./homePage.png" alt="Cultural Exchange Platform" width="900" height="500">
 
 ## Features
 
