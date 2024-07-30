@@ -6,10 +6,15 @@ import { UserContext } from "../context/UserContext";
 import { URL } from "../url";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { HfInference } from "@huggingface/inference";
-const TOKEN_KEY = import.meta.env.VITE_SOME_KEY;
+import { GoogleGenerativeAI } from "@google/generative-ai";
+// import { HfInference } from "@huggingface/inference";
+const TOKEN_KEY = import.meta.env.VITE_GEMINI_API;
 
-const hf = new HfInference(TOKEN_KEY);
+// const hf = new HfInference(TOKEN_KEY);
+
+const genAI = new GoogleGenerativeAI(TOKEN_KEY);
+
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -24,7 +29,7 @@ const CreatePost = () => {
 
   const deleteCategory = (i) => {
     let updatedCats = [...cats];
-    updatedCats.splice(i);
+    updatedCats.splice(i, 1);
     setCats(updatedCats);
   };
 
@@ -32,11 +37,10 @@ const CreatePost = () => {
     e.preventDefault();
     setCheck(true);
     if (desc !== "") {
-      const res = await hf.textGeneration({
-        model: "fabiochiu/t5-base-tag-generation",
-        inputs: desc,
-      });
-      let newCats = [...cats, ...res.generated_text.split(",")]
+      const prompt = `Based on the description provided, give only 3 unique categories for the culture described. Dont give anything else just 3 categories separated by commas and one word categories. Description: ${desc}`
+      const res = await model.generateContent(prompt);
+      let newCats = [...cats, ...res.response.text().split(",")]
+      console.log(res.response.text().split(","), "-----")
       setCats(newCats)
     }
   }; 
