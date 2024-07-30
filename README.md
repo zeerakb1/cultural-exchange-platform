@@ -14,12 +14,13 @@ Check out the live demo: [Cultural Exchange Platform](https://cultural-exchange-
 ## Features
 
 1. **Language Translation**: The platform supports multiple languages, making it accessible to users worldwide.
-2. **Text to Audio**: Provides text-to-audio functionality for enhanced accessibility.
-3. **User Engagement**: Users can engage with posts through the comments section.
-4. **Post Management**: Users can create, edit, delete, and manage their posts.
-5. **Authentication**: Utilizes JWT authentication for secure login and registration.
-6. **Post Viewing**: Users need to log in to view the complete details of a post.
-7. **Search Functionality**: Users can search for specific posts.
+2. **Category Recommendations**: Uses the Gemini API to provide personalized category recommendations to users.
+3. **Text to Audio**: Provides text-to-audio functionality for enhanced accessibility.
+4. **User Engagement**: Users can engage with posts through the comments section.
+5. **Post Management**: Users can create, edit, delete, and manage their posts.
+6. **Authentication**: Utilizes JWT authentication for secure login and registration.
+7. **Post Viewing**: Users need to log in to view the complete details of a post.
+8. **Search Functionality**: Users can search for specific posts.
 
 ## Tech Stack
 
